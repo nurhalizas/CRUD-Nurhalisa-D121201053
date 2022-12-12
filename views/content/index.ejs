@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>CRUD</title>
+    <link rel="stylesheet" href="/stylesheets/output.css">
+</head>
+<body>
+  <div class="row mt-2">
+    <div class="col-md-12">
+        <% if (messages.error){ %>
+            <div class="bg-red-100 rounded-lg py-5 px-6 mb-4 text-base text-red-700 mb-3" role="allert"> <%- messages.error %></div>
+        <% } %>
+        <% if (messages.succes){ %>
+            <div class="bg-green-100 rounded-lg py-5 px-6 mb-4 text-base text-green-700 mb-3" role="allert"> <%- messages.succes %></div>
+        <% } %>
+    </div>
+</div>
+    
+    <%- include('tambah_mahasiswa.ejs') %> 
+    
+            <table class="min-w-full text-center" id="dataTableContent">
+              <thead class="border-b bg-gray-800" id="dataTableContent">
+                <tr>
+                  <th scope="col" class="text-sm font-medium text-white px-6 py-4">
+                    Id
+                  </th>
+                  <th scope="col" class="text-sm font-medium text-white px-6 py-4">
+                    Nama
+                  </th>
+                  <th scope="col" class="text-sm font-medium text-white px-6 py-4">
+                    Departemen
+                  </th>
+                  <th scope="col" class="text-sm font-medium text-white px-6 py-4">
+                    Angkatan
+                  </th>
+                  <th scope="col" class="text-sm font-medium text-white px-6 py-4">
+                    Action
+                  </th>
+                </tr>
+              </thead
+              >
+              <tbody>
+                <% for(var i = 0; i < data.length; i++){ %> 
+                    <tr class="bg-white">
+                        <td><%= (i+1)  %> </td>
+                        <td><%= data[i].nama  %></td>
+                        <td><%= data[i].departemen  %> </td>
+                        <td><%= data[i].angkatan  %></td>
+                        <td>
+                            <a href="javascript:void()" 
+                                data-id="<%= data[i].id %>"
+                                data-nama="<%= data[i].nama %>" 
+                                data-departemen="<%= data[i].departemen %>"
+                                data-angkatan="<%= data[i].angkatan %>"
+                                 class="text-green-800 hover:text-green-900 transition duration-300 ease-in-out mb-4 button-update"> 
+                                 
+                                  <button type="button" class="table-column px-6 py-2.5 bg-gray-800 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-gray-900 hover:shadow-lg focus:bg-gray-900 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-gray-900 active:shadow-lg transition duration-150 ease-in-out">Edit</button>
+                                </a>
+                                 <%- include('edit.ejs') %>
+                                <form action="/content/delete/<%= data[i].id %>" method="POST">
+                                  <button type="submit" class="mt-1 px-6 py-2.5 mb-2.5 bg-red-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-red-700 hover:shadow-lg focus:bg-red-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-red-800 active:shadow-lg transition duration-150 ease-in-out  " onclick="return confirm('Are you sure to Delete?')">Delete</button>
+                                
+                            </form>
+                        </td>
+                    </tr>
+                <% } %> 
+                
+            </tbody>
+            </table>
+            <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+            <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+        <script>
+      $("#dataTableContent").on("click", ".button-update", function(){
+        let id = $(this).data("id");
+        let nama  = $(this).data("nama");
+        let departemen = $(this).data("departemen");
+        let angkatan = $(this).data("angkatan");
+
+
+        // ini mau diperbaiki
+        $("#edit-mahasiswa").modal("show");
+        $(".id").val(id);
+        $(".nama").val(nama);
+        $(".departemen").val(departemen);
+        $(".angkatan").val(angkatan);
+      });
+    </script>
+    
+    
+</body>
+</html>
